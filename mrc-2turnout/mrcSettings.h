@@ -18,7 +18,7 @@ int button1State = 1;         // Indicates if the first button has been pressed
 //int button2State = 1;         // Indicates if the second button has been pressed
 
 // Debug
-byte debug = 1;               // Set to "1" for debug messages in Serial monitor (9600 baud)
+byte debug = 0;               // Set to "1" for debug messages in Serial monitor (9600 baud)
 String dbText = "Main   : ";  // Debug text
 
 // Device
