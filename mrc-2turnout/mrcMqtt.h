@@ -84,9 +84,12 @@ void mqttPublish(String pbTopic, String pbPayload, byte retain) {
   pbTopic.toCharArray(tpc, pbTopic.length()+1);
 
   // Report back to pubTopic[]
-  int check = mqttClient.publish(tpc, msg, retain);
+  bool check = mqttClient.publish(tpc, msg, retain);
 
-  // TODO check "check" integer to see if all went ok
+  // Check if publishing went ok
+  if (check == false) {
+    if (debug == 1) {Serial.println(dbText+"Connection lost or message too large");}
+  }
 
   // Print information
   if (debug == 1) {Serial.println(dbText+"Sending: "+pbTopic+" = "+pbPayload);}
