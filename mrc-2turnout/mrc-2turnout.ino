@@ -158,16 +158,16 @@ void btn1Pressed () {
 
     // Toggle button function
     if (button1State == 0) {
-      if (debug == 1) {Serial.println(dbText+"Set to Diverge");}
-      servoVx1.through();
-      servoVx2.through();
+      if (debug == 1) {Serial.println(dbText+"Set to closed");}
+      servoVx1.closed();
+      servoVx2.closed();
       ledVx1Rakt.blink(500);
       ledVx1Turn.off();
       button1State = 1;
-    } else {
-      if (debug == 1) {Serial.println(dbText+"Set to Trough");}
-      servoVx1.diverge();
-      servoVx2.diverge();
+    } else if (button1State == 1) {
+      if (debug == 1) {Serial.println(dbText+"Set to thrown");}
+      servoVx1.thrown();
+      servoVx2.thrown();
       ledVx1Rakt.off();
       ledVx1Turn.blink(500);
       button1State = 0;
@@ -188,11 +188,11 @@ void servo1Finished () {
     if (servoVx1.position() == 0) {
       ledVx1Rakt.off();
       ledVx1Turn.on();
-      mqttPublish(pubTurnoutState, "diverge", RETAIN);
+      mqttPublish(pubTurnoutState, "thrown", RETAIN);
     } else {
       ledVx1Rakt.on();
       ledVx1Turn.off();
-      mqttPublish(pubTurnoutState, "through", RETAIN);
+      mqttPublish(pubTurnoutState, "closed", RETAIN);
     }
 
   }
@@ -211,11 +211,11 @@ void servo2Finished () {
     if (servoVx2.position() == 0) {
       ledVx1Rakt.off();
       ledVx1Turn.on();
-      mqttPublish(pubTurnoutState, "diverge", RETAIN);
+      mqttPublish(pubTurnoutState, "thrown", RETAIN);
     } else {
       ledVx1Rakt.on();
       ledVx1Turn.off();
-      mqttPublish(pubTurnoutState, "through", RETAIN);
+      mqttPublish(pubTurnoutState, "closed", RETAIN);
     }
   }
 }
@@ -236,8 +236,12 @@ void mqttCallback(char* topic, byte* payload, unsigned int length) {
 
   // Check for "turnout/direction/set" command
   if (tpc == subTopic[0]) {
-    if (msg == "toggle") {
-      btn1Pressed();
+    if (msg == "toggle") { btn1Pressed(); }
+    else if (msg == "closed") {
+      if (servoVx1.position() == 0) { btn1Pressed(); }
+    }
+    else if (msg == "thrown") { 
+      if (servoVx1.position() == 1) { btn1Pressed(); }
     }
   }
   

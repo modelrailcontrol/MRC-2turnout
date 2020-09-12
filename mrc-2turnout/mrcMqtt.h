@@ -88,7 +88,7 @@ void mqttPublish(String pbTopic, String pbPayload, byte retain) {
 
   // Check if publishing went ok
   if (check == false) {
-    if (debug == 1) {Serial.println(dbText+"Connection lost or message too large");}
+    if (debug == 1) {Serial.println(dbText+"MQTT connection lost or publish message too large");}
   }
 
   // Print information
