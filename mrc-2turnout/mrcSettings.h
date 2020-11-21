@@ -9,8 +9,8 @@
 int pinVx1Led1 = D4;          // Which pin the first status led is attached to
 int pinVx1Led2 = D3;          // Which pin the second status led is attached to
 int pinVx1Button = D2;        // Which pin the first button is attached to
-int pinVx1Servo = D1;         // Which pin the first servo is attached to
-int pinVx2Servo = RX;         // Which pin the second servo is attached to
+int pinVx1aServo = D1;         // Which pin the first servo is attached to
+int pinVx1bServo = RX;         // Which pin the second servo is attached to
 
 // Button
 int hasStarted = 1;           // Indicates if we have just started from a power down
@@ -26,13 +26,13 @@ String deviceID;
 String deviceName;
 
 // Servo 1
-int servo1min;
-int servo1max;
-int servo1move;
-int servo1back;
+int servo1aMin;
+int servo1aMax;
+int servo1aMove;
+int servo1aBack;
 
 // Servo 2
-int servo2min;
-int servo2max;
-int servo2move;
-int servo2back;
+int servo1bMin;
+int servo1bMax;
+int servo1bMove;
+int servo1bBack;

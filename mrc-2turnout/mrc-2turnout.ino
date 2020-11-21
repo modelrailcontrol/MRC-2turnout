@@ -8,12 +8,16 @@
 //  the Free Software Foundation, either version 3 of the License, or
 //  (at your option) any later version.
 //    
-//  Last modified: 2020-07-05
+//  Last modified: 2020-11-21
+//  Compiled with: LOLIN(WEMOS) D1 R2 & mini
+//
+//  Uses the following cards:
+//   esp8266 by ESP8266 Community - v2.7.4 - https://github.com/esp8266/Arduino
 //
 //  Uses the following libraries
-//   PubSubClient by Nick O'Leary - https://pubsubclient.knolleary.net/
-//   IotWebConf by Balazs Kelemen - https://github.com/prampec/IotWebConf
-//   EasyButton by Evert Arias    - https://github.com/evert-arias/EasyButton
+//   EasyButton by Evert Arias    - v2.0.1 - https://github.com/evert-arias/EasyButton
+//   IotWebConf by Balazs Kelemen - v2.3.1 - https://github.com/prampec/IotWebConf
+//   PubSubClient by Nick O'Leary - v2.8.0 - https://pubsubclient.knolleary.net/
 //
 // ==================================================================================================
 
@@ -40,8 +44,8 @@
 // --------------------------------------------------------------------------------------------------
 
 // Create Servo object and assign pin
-mrcServo servoVx1(pinVx1Servo);
-mrcServo servoVx2(pinVx2Servo);
+mrcServo servoVx1a(pinVx1aServo);
+mrcServo servoVx1b(pinVx1bServo);
 
 
 // Create Status LED object and assign pin
@@ -99,15 +103,16 @@ void setup() {
 
   
   // -----------------------------------------------------------------------------------------------
-  // Servo setup
+  // Servo setup (in the mrcWifi.h file)
 
-  // Set limits of the servo: "xxx.limit(min degree, max degree, time interval in ms)"
-  servoVx1.limits(servo1min,servo1max,servo1move,servo1back);
-  servoVx2.limits(servo2min,servo2max,servo2move,servo2back);
+  // Servo limits
+  // xxx.limit(min degree, max degree, time interval in ms)
+  servoVx1a.limits(servo1aMin,servo1aMax,servo1aMove,servo1aBack);
+  servoVx1b.limits(servo1bMin,servo1bMax,servo1bMove,servo1bBack);
 
   // Define which funktion to call when a servo has stopped moving
-  servoVx1.onFinished(servo1Finished);
-  servoVx2.onFinished(servo2Finished);
+  servoVx1a.onFinished(servo1aFinished);
+  servoVx1b.onFinished(servo1bFinished);
 
 }
 
@@ -132,10 +137,10 @@ void loop() {
   mqttClient.loop();            // Wait for incoming MQTT messages
   iotWebConf.doLoop();          // Check for IotWebConfig actions
   vx1button.read();             // Check for button pressed
-  servoVx1.loop();              // Check for/perform servo action
+  servoVx1a.loop();              // Check for/perform servo action
   ledVx1Rakt.loop();            // Check for/perform led action
   ledVx1Turn.loop();            // Check for/perform led action
-  servoVx2.loop();              // Check for/perform servo action
+  servoVx1b.loop();              // Check for/perform servo action
 
   // Blink both status leds if we have just started after a power off
   if (hasStarted == 1) {
@@ -148,26 +153,26 @@ void loop() {
 } 
 
 // --------------------------------------------------------------------------------------------------
-//  Function that gets called when the button is pressed
+//  Function that gets called when button 1 is pressed
 // --------------------------------------------------------------------------------------------------
 void btn1Pressed () {
     if (debug == 1) {Serial.println(dbText+"Button 1 pressed");}
 
      // Indicate moving turout
-     mqttPublish(pubTurnoutState, "moving", RETAIN);
+     mqttPublish(pubTurnout1State, "moving", RETAIN);
 
     // Toggle button function
     if (button1State == 0) {
-      if (debug == 1) {Serial.println(dbText+"Set to closed");}
-      servoVx1.closed();
-      servoVx2.closed();
+      if (debug == 1) {Serial.println(dbText+"Turnout 1 set to closed");}
+      servoVx1a.closed();
+      servoVx1b.closed();
       ledVx1Rakt.blink(500);
       ledVx1Turn.off();
       button1State = 1;
     } else if (button1State == 1) {
-      if (debug == 1) {Serial.println(dbText+"Set to thrown");}
-      servoVx1.thrown();
-      servoVx2.thrown();
+      if (debug == 1) {Serial.println(dbText+"Turnout 1 set to thrown");}
+      servoVx1a.thrown();
+      servoVx1b.thrown();
       ledVx1Rakt.off();
       ledVx1Turn.blink(500);
       button1State = 0;
@@ -176,46 +181,46 @@ void btn1Pressed () {
 }
 
 // --------------------------------------------------------------------------------------------------
-//  Function that gets called when servo 1 stops moving
+//  Function that gets called when servo 1a stops moving
 // --------------------------------------------------------------------------------------------------
-void servo1Finished () {
-  if (debug == 1) {Serial.println(dbText+"Servo 1 finished");}
+void servo1aFinished () {
+  if (debug == 1) {Serial.println(dbText+"Servo 1a finished");}
 
   // Set LEDs only if both servos are at end position
-  if (servoVx2.status() == 0){
+  if (servoVx1b.status() == 0){
 
     // Check in which position servo is and set status LEDs accordingly
-    if (servoVx1.position() == 0) {
+    if (servoVx1a.position() == 0) {
       ledVx1Rakt.off();
       ledVx1Turn.on();
-      mqttPublish(pubTurnoutState, "thrown", RETAIN);
+      mqttPublish(pubTurnout1State, "thrown", RETAIN);
     } else {
       ledVx1Rakt.on();
       ledVx1Turn.off();
-      mqttPublish(pubTurnoutState, "closed", RETAIN);
+      mqttPublish(pubTurnout1State, "closed", RETAIN);
     }
 
   }
 }
 
 // --------------------------------------------------------------------------------------------------
-//  Function that gets called when servo 2 stops moving
+//  Function that gets called when servo 1b stops moving
 // --------------------------------------------------------------------------------------------------
-void servo2Finished () {
-  if (debug == 1) {Serial.println(dbText+"Servo 2 finished");}
+void servo1bFinished () {
+  if (debug == 1) {Serial.println(dbText+"Servo 1b finished");}
 
   // Set LEDs only if both servos are at end position
-  if (servoVx1.status() == 0){
+  if (servoVx1a.status() == 0){
     
     // Check in which position servo is and set status LEDs accordingly
-    if (servoVx2.position() == 0) {
+    if (servoVx1b.position() == 0) {
       ledVx1Rakt.off();
       ledVx1Turn.on();
-      mqttPublish(pubTurnoutState, "thrown", RETAIN);
+      mqttPublish(pubTurnout1State, "thrown", RETAIN);
     } else {
       ledVx1Rakt.on();
       ledVx1Turn.off();
-      mqttPublish(pubTurnoutState, "closed", RETAIN);
+      mqttPublish(pubTurnout1State, "closed", RETAIN);
     }
   }
 }
@@ -234,14 +239,14 @@ void mqttCallback(char* topic, byte* payload, unsigned int length) {
   // Print the topic and payload
   if (debug == 1) {Serial.println(dbText+"Recieved: "+tpc+" = "+msg);}
 
-  // Check for "turnout/direction/set" command
+  // Check for Turnout 1 commands
   if (tpc == subTopic[0]) {
     if (msg == "toggle") { btn1Pressed(); }
     else if (msg == "closed") {
-      if (servoVx1.position() == 0) { btn1Pressed(); }
+      if (servoVx1a.position() == 0) { btn1Pressed(); }
     }
     else if (msg == "thrown") { 
-      if (servoVx1.position() == 1) { btn1Pressed(); }
+      if (servoVx1a.position() == 1) { btn1Pressed(); }
     }
   }
   
@@ -256,16 +261,16 @@ void configSaved()
   deviceID = String(cfgDeviceId);
   deviceName = String(cfgDeviceName);
   
-  servo1min = atoi(cfgServo1Min);
-  servo1max = atoi(cfgServo1Max);
-  servo1move = atoi(cfgServo1Move);
-  servo1back = atoi(cfgServo1Back);
-  servoVx1.limits(servo1min,servo1max,servo1move,servo1back);
+  servo1aMin = atoi(cfgservo1aMin);
+  servo1aMax = atoi(cfgservo1aMax);
+  servo1aMove = atoi(cfgservo1aMove);
+  servo1aBack = atoi(cfgservo1aBack);
+  servoVx1a.limits(servo1aMin,servo1aMax,servo1aMove,servo1aBack);
 
-  servo2min = atoi(cfgServo2Min);
-  servo2max = atoi(cfgServo2Max);
-  servo2move = atoi(cfgServo2Move);
-  servo2back = atoi(cfgServo2Back);
-  servoVx2.limits(servo2min,servo2max,servo2move,servo2back);
+  servo1bMin = atoi(cfgServo1bMin);
+  servo1bMax = atoi(cfgServo1bMax);
+  servo1bMove = atoi(cfgServo1bMove);
+  servo1bBack = atoi(cfgServo1bBack);
+  servoVx1b.limits(servo1bMin,servo1bMax,servo1bMove,servo1bBack);
 
 }
