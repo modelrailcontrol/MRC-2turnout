@@ -11,16 +11,17 @@ PubSubClient mqttClient(wifiClient);
 // Define topic variables
 
 // Variable for topics to subscribe to
-const int nbrSubTopics = 1;
+const int nbrSubTopics = 2;
 String subTopic[nbrSubTopics];
 
 // Variable for topics to publish to
-const int nbrPubTopics = 8;
+const int nbrPubTopics = 13;
 String pubTopic[nbrPubTopics];
 String pubTopicContent[nbrPubTopics];
 
 // Often used topics
 String pubTurnout1State;
+String pubTurnout2State;
 String pubDeviceStateTopic;
 
 // MQTT command to execute when a MQTT message arrives (see mqttCallback() )
@@ -37,7 +38,7 @@ void mqttSetup() {
 
   // Subscribe
   subTopic[0] = "mrc/"+deviceID+"/turnout1/direction/set";
-//  subTopic[1] = "mrc/"+deviceID+"/turnout2/direction/set";
+  subTopic[1] = "mrc/"+deviceID+"/turnout2/direction/set";
 //  subTopic[2] = signalOneSlaveListen;
 //  subTopic[3] = signalTwoSlaveListen;
 
@@ -65,8 +66,23 @@ void mqttSetup() {
   pubTopic[7] = "mrc/"+deviceID+"/turnout1/direction/$datatype";
   pubTopicContent[7] = "string";
 
+  // Publish - node 02
+  pubTopic[8] = "mrc/"+deviceID+"/turnout2/$name";
+  pubTopicContent[8] = "Växel 2";
+  pubTopic[9] = "mrc/"+deviceID+"/turnout2/$type";
+  pubTopicContent[9] = "2turnout";
+  pubTopic[10] = "mrc/"+deviceID+"/turnout2/$properties";
+  pubTopicContent[10] = "direction";
+  
+  // Publish - node 02 - property 01
+  pubTopic[11] = "mrc/"+deviceID+"/turnout2/direction/$name";
+  pubTopicContent[11] = "Riktning";
+  pubTopic[12] = "mrc/"+deviceID+"/turnout2/direction/$datatype";
+  pubTopicContent[12] = "string";
+
   // Special topics
   pubTurnout1State = "mrc/"+deviceID+"/turnout1/direction";
+  pubTurnout2State = "mrc/"+deviceID+"/turnout2/direction";
   pubDeviceStateTopic = "mrc/"+deviceID+"/$state";
 
 }
