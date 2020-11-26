@@ -34,8 +34,8 @@ class mrcServo {
     void init();
     void limits(int min, int max, int interval, int backStep);
     void loop();
-    void through();
-    void diverge();
+    void closed();
+    void thrown();
     void moveTo (int newPosition);
     boolean status();
     boolean position();

@@ -5,13 +5,37 @@
 // --------------------------------------------------------------------------------------------------
 // IotWebConf variables
 
+// Servo 1a
+int servo1aMin;
+int servo1aMax;
+int servo1aMove;
+int servo1aBack;
+
+// Servo 1b
+int servo1bMin;
+int servo1bMax;
+int servo1bMove;
+int servo1bBack;
+
+// Servo 2a
+int servo2aMin;
+int servo2aMax;
+int servo2aMove;
+int servo2aBack;
+
+// Servo 2b
+int servo2bMin;
+int servo2bMax;
+int servo2bMove;
+int servo2bBack;
+
 // Default string and number lenght
 #define STRING_LEN 32
 #define NUMBER_LEN 8
 
 // Access point configuration
-const char thingName[] = "MRC-client";                  // Initial AP name, used as SSID of the own Access Point
-const char wifiInitialApPassword[] = "mrc4president";   // Initial password, used when it creates an own Access Point
+const char thingName[] = "MRC-client";                  // Initial AP name, used as SSID of its own Access Point
+const char wifiInitialApPassword[] = "mrc4president";   // Initial password, used when it creates its own Access Point
 
 // Device configuration
 char cfgMqttServer[STRING_LEN];
@@ -19,15 +43,25 @@ char cfgMqttPort[NUMBER_LEN];
 char cfgDeviceId[STRING_LEN];
 char cfgDeviceName[STRING_LEN];
 
-// Node configuration
-char cfgServo1Min[NUMBER_LEN];
-char cfgServo1Max[NUMBER_LEN];
-char cfgServo1Move[NUMBER_LEN];
-char cfgServo1Back[NUMBER_LEN];
-char cfgServo2Min[NUMBER_LEN];
-char cfgServo2Max[NUMBER_LEN];
-char cfgServo2Move[NUMBER_LEN];
-char cfgServo2Back[NUMBER_LEN];
+// Node 1 configuration
+char cfgservo1aMin[NUMBER_LEN];
+char cfgservo1aMax[NUMBER_LEN];
+char cfgservo1aMove[NUMBER_LEN];
+char cfgservo1aBack[NUMBER_LEN];
+char cfgServo1bMin[NUMBER_LEN];
+char cfgServo1bMax[NUMBER_LEN];
+char cfgServo1bMove[NUMBER_LEN];
+char cfgServo1bBack[NUMBER_LEN];
+
+// Node 2 configuration
+char cfgservo2aMin[NUMBER_LEN]="85";
+char cfgservo2aMax[NUMBER_LEN];
+char cfgservo2aMove[NUMBER_LEN];
+char cfgservo2aBack[NUMBER_LEN];
+char cfgServo2bMin[NUMBER_LEN];
+char cfgServo2bMax[NUMBER_LEN];
+char cfgServo2bMove[NUMBER_LEN];
+char cfgServo2bBack[NUMBER_LEN];
 
 // Indicate if it is time to reset the client or connect to MQTT
 boolean needMqttConnect = false;
@@ -64,22 +98,41 @@ IotWebConfParameter webMqttServer = IotWebConfParameter("MQTT IP-adress", "mqttS
 IotWebConfParameter webMqttPort = IotWebConfParameter("MQTT-port", "mqttPort", cfgMqttPort, NUMBER_LEN);
 
 // Separator with text
-IotWebConfSeparator separator1 = IotWebConfSeparator("Inst&auml;llningar f&ouml;r Servo 1");
+IotWebConfSeparator separator1a = IotWebConfSeparator("Inst&auml;llningar f&ouml;r Servo 1a");
 
-// Define settings to show up on configuration web page - Servo 1
-IotWebConfParameter webServo1Min = IotWebConfParameter("Servo 1 min", "servo1min", cfgServo1Min, NUMBER_LEN);
-IotWebConfParameter webServo1Max = IotWebConfParameter("Servo 1 max", "servo1max", cfgServo1Max, NUMBER_LEN);
-IotWebConfParameter webServo1Move = IotWebConfParameter("Servo 1 hastighet", "servo1move", cfgServo1Move, NUMBER_LEN);
-IotWebConfParameter webServo1Back = IotWebConfParameter("Servo 1 back", "servo1back", cfgServo1Back, NUMBER_LEN);
+// Define settings to show up on configuration web page - Servo 1a
+IotWebConfParameter webservo1aMin = IotWebConfParameter("Servo 1a min", "servo1aMin", cfgservo1aMin, NUMBER_LEN);
+IotWebConfParameter webservo1aMax = IotWebConfParameter("Servo 1a max", "servo1aMax", cfgservo1aMax, NUMBER_LEN);
+IotWebConfParameter webservo1aMove = IotWebConfParameter("Servo 1a hastighet", "servo1aMove", cfgservo1aMove, NUMBER_LEN);
+IotWebConfParameter webservo1aBack = IotWebConfParameter("Servo 1a back", "servo1aBack", cfgservo1aBack, NUMBER_LEN);
 
 // Separator with text
-IotWebConfSeparator separator2 = IotWebConfSeparator("Inst&auml;llningar f&ouml;r Servo 2");
+IotWebConfSeparator separator1b = IotWebConfSeparator("Inst&auml;llningar f&ouml;r Servo 1b");
 
-// Define settings to show up on configuration web page - Servo 2
-IotWebConfParameter webServo2Min = IotWebConfParameter("Servo 2 min", "servo2min", cfgServo2Min, NUMBER_LEN);
-IotWebConfParameter webServo2Max = IotWebConfParameter("Servo 2 max", "servo2max", cfgServo2Max, NUMBER_LEN);
-IotWebConfParameter webServo2Move = IotWebConfParameter("Servo 2 hastighet", "servo2move", cfgServo2Move, NUMBER_LEN);
-IotWebConfParameter webServo2Back = IotWebConfParameter("Servo 2 back", "servo2back", cfgServo2Back, NUMBER_LEN);
+// Define settings to show up on configuration web page - Servo 1b
+IotWebConfParameter webServo1bMin = IotWebConfParameter("Servo 1b min", "servo1bMin", cfgServo1bMin, NUMBER_LEN);
+IotWebConfParameter webServo1bMax = IotWebConfParameter("Servo 1b max", "servo1bMax", cfgServo1bMax, NUMBER_LEN);
+IotWebConfParameter webServo1bMove = IotWebConfParameter("Servo 1b hastighet", "servo1bMove", cfgServo1bMove, NUMBER_LEN);
+IotWebConfParameter webServo1bBack = IotWebConfParameter("Servo 1b back", "servo1bBack", cfgServo1bBack, NUMBER_LEN);
+
+// Separator with text
+IotWebConfSeparator separator2a = IotWebConfSeparator("Inst&auml;llningar f&ouml;r Servo 2a");
+
+// Define settings to show up on configuration web page - Servo 2a
+IotWebConfParameter webservo2aMin = IotWebConfParameter("Servo 2a min", "servo2aMin", cfgservo2aMin, NUMBER_LEN);
+IotWebConfParameter webservo2aMax = IotWebConfParameter("Servo 2a max", "servo2aMax", cfgservo2aMax, NUMBER_LEN);
+IotWebConfParameter webservo2aMove = IotWebConfParameter("Servo 2a hastighet", "servo2aMove", cfgservo2aMove, NUMBER_LEN);
+IotWebConfParameter webservo2aBack = IotWebConfParameter("Servo 2a back", "servo2aBack", cfgservo2aBack, NUMBER_LEN);
+
+// Separator with text
+IotWebConfSeparator separator2b = IotWebConfSeparator("Inst&auml;llningar f&ouml;r Servo 2b");
+
+// Define settings to show up on configuration web page - Servo 1b
+IotWebConfParameter webServo2bMin = IotWebConfParameter("Servo 2b min", "servo2bMin", cfgServo2bMin, NUMBER_LEN);
+IotWebConfParameter webServo2bMax = IotWebConfParameter("Servo 2b max", "servo2bMax", cfgServo2bMax, NUMBER_LEN);
+IotWebConfParameter webServo2bMove = IotWebConfParameter("Servo 2b hastighet", "servo2bMove", cfgServo2bMove, NUMBER_LEN);
+IotWebConfParameter webServo2bBack = IotWebConfParameter("Servo 2b back", "servo2bBack", cfgServo2bBack, NUMBER_LEN);
+
 
 void wifiSetup() {
   // ------------------------------------------------------------------------------------------------
@@ -91,16 +144,26 @@ void wifiSetup() {
   iotWebConf.addParameter(&webDeviceName);
   iotWebConf.addParameter(&webMqttServer);
   iotWebConf.addParameter(&webMqttPort);
-  iotWebConf.addParameter(&separator1);
-  iotWebConf.addParameter(&webServo1Min);
-  iotWebConf.addParameter(&webServo1Max);
-  iotWebConf.addParameter(&webServo1Move);
-  iotWebConf.addParameter(&webServo1Back);
-  iotWebConf.addParameter(&separator2);
-  iotWebConf.addParameter(&webServo2Min);
-  iotWebConf.addParameter(&webServo2Max);
-  iotWebConf.addParameter(&webServo2Move);
-  iotWebConf.addParameter(&webServo2Back);
+  iotWebConf.addParameter(&separator1a);
+  iotWebConf.addParameter(&webservo1aMin);
+  iotWebConf.addParameter(&webservo1aMax);
+  iotWebConf.addParameter(&webservo1aMove);
+  iotWebConf.addParameter(&webservo1aBack);
+  iotWebConf.addParameter(&separator1b);
+  iotWebConf.addParameter(&webServo1bMin);
+  iotWebConf.addParameter(&webServo1bMax);
+  iotWebConf.addParameter(&webServo1bMove);
+  iotWebConf.addParameter(&webServo1bBack);
+  iotWebConf.addParameter(&separator2a);
+  iotWebConf.addParameter(&webservo2aMin);
+  iotWebConf.addParameter(&webservo2aMax);
+  iotWebConf.addParameter(&webservo2aMove);
+  iotWebConf.addParameter(&webservo2aBack);
+  iotWebConf.addParameter(&separator2b);
+  iotWebConf.addParameter(&webServo2bMin);
+  iotWebConf.addParameter(&webServo2bMax);
+  iotWebConf.addParameter(&webServo2bMove);
+  iotWebConf.addParameter(&webServo2bBack);
   iotWebConf.getApTimeoutParameter()->visible = true; // Show & set AP timeout at start
 
 //  iotWebConf.setStatusPin(STATUS_PIN);
@@ -117,29 +180,48 @@ void wifiSetup() {
     deviceID = String(cfgDeviceId);
     deviceName = String(cfgDeviceName);
 
-    servo1min = atoi(cfgServo1Min);
-    servo1max = atoi(cfgServo1Max);
-    servo1move = atoi(cfgServo1Move);
-    servo1back = atoi(cfgServo1Back);
-    servo2min = atoi(cfgServo2Min);
-    servo2max = atoi(cfgServo2Max);
-    servo2move = atoi(cfgServo2Move);
-    servo2back = atoi(cfgServo2Back);
-  } else {
+    servo1aMin = atoi(cfgservo1aMin);
+    servo1aMax = atoi(cfgservo1aMax);
+    servo1aMove = atoi(cfgservo1aMove);
+    servo1aBack = atoi(cfgservo1aBack);
+    servo1bMin = atoi(cfgServo1bMin);
+    servo1bMax = atoi(cfgServo1bMax);
+    servo1bMove = atoi(cfgServo1bMove);
+    servo1bBack = atoi(cfgServo1bBack);
+
+    servo2aMin = atoi(cfgservo2aMin);
+    servo2aMax = atoi(cfgservo2aMax);
+    servo2aMove = atoi(cfgservo2aMove);
+    servo2aBack = atoi(cfgservo2aBack);
+    servo2bMin = atoi(cfgServo2bMin);
+    servo2bMax = atoi(cfgServo2bMax);
+    servo2bMove = atoi(cfgServo2bMove);
+    servo2bBack = atoi(cfgServo2bBack);
+
+} else {
     if (debug == 1) {Serial.println(dbText+"Default config");}
     deviceName = String(thingName);
     String tmpNo = String(random(2147483647));
     deviceID = deviceName+"-"+tmpNo;
 
-    servo1min = 80;
-    servo1max = 94;
-    servo1move = 100;
-    servo1back = 3;
-    servo2min = 87;
-    servo2max = 99;
-    servo2move = 100;
-    servo2back = 3;
-  }
+    servo1aMin = 80;
+    servo1aMax = 94;
+    servo1aMove = 100;
+    servo1aBack = 3;
+    servo1bMin = 87;
+    servo1bMax = 99;
+    servo1bMove = 100;
+    servo1bBack = 3;
+
+    servo2aMin = 80;
+    servo2aMax = 94;
+    servo2aMove = 100;
+    servo2aBack = 3;
+    servo2bMin = 87;
+    servo2bMax = 99;
+    servo2bMove = 100;
+    servo2bBack = 3;
+}
 
   if (debug == 1) {Serial.println(dbText+"IotWebConf start...done");}
 
@@ -150,6 +232,9 @@ void wifiSetup() {
 // --------------------------------------------------------------------------------------------------
 void handleRoot()
 {
+  // Convert AP timout time från microseconds to seconds for better readability
+  int ApTimeout = iotWebConf.getApTimeoutMs()/1000;
+  
   // -- Let IotWebConf test and handle captive portal requests.
   if (iotWebConf.handleCaptivePortal())
   {
@@ -168,7 +253,7 @@ void handleRoot()
 
   page += "<p>M&ouml;jligheten att &auml;ndra dessa inst&auml;llningar &auml;r ";
   page += "alltid tillg&auml;nglig de f&ouml;rsta ";
-  page += "30";
+  page += ApTimeout;
   page += " sekunderna efter start av enheten.";
   page += "</body></html>\n";
 

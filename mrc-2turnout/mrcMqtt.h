@@ -11,16 +11,17 @@ PubSubClient mqttClient(wifiClient);
 // Define topic variables
 
 // Variable for topics to subscribe to
-const int nbrSubTopics = 1;
+const int nbrSubTopics = 2;
 String subTopic[nbrSubTopics];
 
 // Variable for topics to publish to
-const int nbrPubTopics = 8;
+const int nbrPubTopics = 13;
 String pubTopic[nbrPubTopics];
 String pubTopicContent[nbrPubTopics];
 
 // Often used topics
-String pubTurnoutState;
+String pubTurnout1State;
+String pubTurnout2State;
 String pubDeviceStateTopic;
 
 // MQTT command to execute when a MQTT message arrives (see mqttCallback() )
@@ -36,8 +37,8 @@ const byte RETAIN = 1;        // Used to publish topics as retained
 void mqttSetup() {
 
   // Subscribe
-  subTopic[0] = "mrc/"+deviceID+"/turnout/direction/set";
-//  subTopic[1] = "mrc/"+deviceID+"/turnout/direction/set";
+  subTopic[0] = "mrc/"+deviceID+"/turnout1/direction/set";
+  subTopic[1] = "mrc/"+deviceID+"/turnout2/direction/set";
 //  subTopic[2] = signalOneSlaveListen;
 //  subTopic[3] = signalTwoSlaveListen;
 
@@ -49,31 +50,46 @@ void mqttSetup() {
   pubTopicContent[1] = deviceID;
 
   pubTopic[2] = "mrc/"+deviceID+"/$nodes";
-  pubTopicContent[2] = "turnout";
+  pubTopicContent[2] = "turnout1";
 
   // Publish - node 01
-  pubTopic[3] = "mrc/"+deviceID+"/turnout/$name";
+  pubTopic[3] = "mrc/"+deviceID+"/turnout1/$name";
   pubTopicContent[3] = "Växel 1";
-  pubTopic[4] = "mrc/"+deviceID+"/turnout/$type";
+  pubTopic[4] = "mrc/"+deviceID+"/turnout1/$type";
   pubTopicContent[4] = "2turnout";
-  pubTopic[5] = "mrc/"+deviceID+"/turnout/$properties";
+  pubTopic[5] = "mrc/"+deviceID+"/turnout1/$properties";
   pubTopicContent[5] = "direction";
   
   // Publish - node 01 - property 01
-  pubTopic[6] = "mrc/"+deviceID+"/turnout/direction/$name";
+  pubTopic[6] = "mrc/"+deviceID+"/turnout1/direction/$name";
   pubTopicContent[6] = "Riktning";
-  pubTopic[7] = "mrc/"+deviceID+"/turnout/direction/$datatype";
+  pubTopic[7] = "mrc/"+deviceID+"/turnout1/direction/$datatype";
   pubTopicContent[7] = "string";
 
-  // Device status
-  pubTurnoutState = "mrc/"+deviceID+"/turnout/direction";
+  // Publish - node 02
+  pubTopic[8] = "mrc/"+deviceID+"/turnout2/$name";
+  pubTopicContent[8] = "Växel 2";
+  pubTopic[9] = "mrc/"+deviceID+"/turnout2/$type";
+  pubTopicContent[9] = "2turnout";
+  pubTopic[10] = "mrc/"+deviceID+"/turnout2/$properties";
+  pubTopicContent[10] = "direction";
+  
+  // Publish - node 02 - property 01
+  pubTopic[11] = "mrc/"+deviceID+"/turnout2/direction/$name";
+  pubTopicContent[11] = "Riktning";
+  pubTopic[12] = "mrc/"+deviceID+"/turnout2/direction/$datatype";
+  pubTopicContent[12] = "string";
+
+  // Special topics
+  pubTurnout1State = "mrc/"+deviceID+"/turnout1/direction";
+  pubTurnout2State = "mrc/"+deviceID+"/turnout2/direction";
   pubDeviceStateTopic = "mrc/"+deviceID+"/$state";
 
 }
 
 
 // --------------------------------------------------------------------------------------------------
-//  Publish message to MQTT broker
+//  Publish a single message to the MQTT broker
 // --------------------------------------------------------------------------------------------------
 void mqttPublish(String pbTopic, String pbPayload, byte retain) {
 
@@ -84,9 +100,12 @@ void mqttPublish(String pbTopic, String pbPayload, byte retain) {
   pbTopic.toCharArray(tpc, pbTopic.length()+1);
 
   // Report back to pubTopic[]
-  int check = mqttClient.publish(tpc, msg, retain);
+  bool check = mqttClient.publish(tpc, msg, retain);
 
-  // TODO check "check" integer to see if all went ok
+  // Check if publishing went ok
+  if (check == false) {
+    if (debug == 1) {Serial.println(dbText+"MQTT connection lost or publish message too large");}
+  }
 
   // Print information
   if (debug == 1) {Serial.println(dbText+"Sending: "+pbTopic+" = "+pbPayload);}
@@ -142,7 +161,7 @@ boolean mqttConnect() {
         if (debug == 1) {Serial.print(" = ");}
         if (debug == 1) {Serial.println(tmpContent);}
 
-        // ... and subscribe to topic
+        // ... and publish to topic
         mqttClient.publish(tmpTopic, tmpContent, true);
       
       }
@@ -160,8 +179,8 @@ boolean mqttConnect() {
   }
 
   // Set device status to "ready" (convert String topic to Char)
-  char tpc[pubTurnoutState.length()+1];
-  pubTurnoutState.toCharArray(tpc, pubTurnoutState.length()+1);
+  char tpc[pubTurnout1State.length()+1];
+  pubTurnout1State.toCharArray(tpc, pubTurnout1State.length()+1);
   mqttClient.publish(tpc, "unknown", RETAIN);
 
   tpc[pubDeviceStateTopic.length()+1];
