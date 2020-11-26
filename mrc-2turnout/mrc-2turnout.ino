@@ -11,10 +11,10 @@
 //  Last modified: 2020-11-21
 //  Compiled with: LOLIN(WEMOS) D1 R2 & mini
 //
-//  Uses the following cards:
+//  Uses the following card definitions:
 //   esp8266 by ESP8266 Community - v2.7.4 - https://github.com/esp8266/Arduino
 //
-//  Uses the following libraries
+//  Uses the following libraries:
 //   EasyButton by Evert Arias    - v2.0.1 - https://github.com/evert-arias/EasyButton
 //   IotWebConf by Balazs Kelemen - v2.3.1 - https://github.com/prampec/IotWebConf
 //   PubSubClient by Nick O'Leary - v2.8.0 - https://pubsubclient.knolleary.net/
