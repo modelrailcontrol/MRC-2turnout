@@ -1,9 +1,20 @@
-/*
-  MRC Wifi settings
-*/
+// ==================================================================================================
+//
+//  MRC 2turnout wifi settings & functions
+//  Copyright (C) 2020  Peter Kindström
+//
+//  This program is free software: you can redistribute it and/or modify
+//  it under the terms of the GNU General Public License as published by
+//  the Free Software Foundation, either version 3 of the License, or
+//  (at your option) any later version.
+//
+//  Last modified: 2020-12-24
+//
+// ==================================================================================================
 
 // --------------------------------------------------------------------------------------------------
 // IotWebConf variables
+// -------------------------------------------------------------------------------------------------
 
 // Servo 1a
 int servo1aMin;
@@ -79,6 +90,7 @@ boolean needMqttConnect = false;
 
 // -------------------------------------------------------------------------------------------------
 // IotWebConf configuration
+// -------------------------------------------------------------------------------------------------
 
 // Callback method declarations
 void wifiConnected();
@@ -173,7 +185,6 @@ void wifiSetup() {
   iotWebConf.setWifiConnectionCallback(&wifiConnected);
   
   // -- Get all the configuration/settings from EEPROM memory
-  // TODO Hantera/konvertera MQTT-parametrar
   boolean validConfig = iotWebConf.init();
   if (validConfig == true) {
     if (debug == 1) {Serial.println(dbText+"Config from EEPROM");}
