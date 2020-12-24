@@ -101,7 +101,7 @@ void mrcStatus::blink(int time) {
 //    1 = If 'action' = ON    i.e LED turned on
 //    2 = If 'action' = BLINK i.e LED is blinking
 // --------------------------------------------------------------------------------------------------
-boolean mrcStatus::status() {
+int mrcStatus::status() {
   if (debug == 1) {Serial.println(dbText+"Return status = "+action);}
   return action;
 }

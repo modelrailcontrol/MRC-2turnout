@@ -60,7 +60,7 @@ class mrcServo {
     void closed();
     void thrown();
     void moveTo (int newPosition);
-    boolean status();
+    int status();
     boolean position();
 };
 

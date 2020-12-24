@@ -48,7 +48,7 @@ class mrcStatus {
     void on();
     void off();
     void blink(int time);
-    boolean status();
+    int status();
 };
 
 #endif

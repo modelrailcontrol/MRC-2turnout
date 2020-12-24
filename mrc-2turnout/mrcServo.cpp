@@ -147,7 +147,7 @@ void mrcServo::moveTo (int newPosition) {
 //    1 = servo moving to MIN endpoint (MIN)
 //    2 = servo moving to MAX endpoint (MAX)
 // --------------------------------------------------------------------------------------------------
-boolean mrcServo::status() {
+int mrcServo::status() {
   return servoAction;
 }
 

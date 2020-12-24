@@ -167,7 +167,7 @@ void loop() {
       ledVx2Turn.blink(1500);     // Set blink rate 1500 ms for status led 2b
       hasStarted = 0;             // Don't run this routine again (until next power off/on)
   }
-    
+  
 } 
 
 // --------------------------------------------------------------------------------------------------
