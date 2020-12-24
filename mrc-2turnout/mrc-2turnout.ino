@@ -167,7 +167,7 @@ void loop() {
       ledVx2Turn.blink(1500);     // Set blink rate 1500 ms for status led 2b
       hasStarted = 0;             // Don't run this routine again (until next power off/on)
   }
-    
+  
 } 
 
 // --------------------------------------------------------------------------------------------------
@@ -334,7 +334,7 @@ void mqttCallback(char* topic, byte* payload, unsigned int length) {
 
   // Check for Turnout 1 commands
   if (tpc == subTopic[0]) {
-    if (hasStarted == 1) {hasStarted = 0};
+    if (hasStarted == 1) {hasStarted = 0; };
 
     if (msg == "toggle") { btn1Pressed(); }
     else if (msg == "closed") {
@@ -347,7 +347,7 @@ void mqttCallback(char* topic, byte* payload, unsigned int length) {
   
   // Check for Turnout 2 commands
   if (tpc == subTopic[1]) {
-    if (hasStarted == 1) {hasStarted = 0};
+    if (hasStarted == 1) {hasStarted = 0; };
 
     if (msg == "toggle") { btn2Pressed(); }
     else if (msg == "closed") {

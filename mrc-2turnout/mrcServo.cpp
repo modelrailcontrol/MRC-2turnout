@@ -1,22 +1,46 @@
+// ==================================================================================================
+//
+//  MRC Servo class
+//  Copyright (C) 2020  Peter Kindström
+//
+//  This program is free software: you can redistribute it and/or modify
+//  it under the terms of the GNU General Public License as published by
+//  the Free Software Foundation, either version 3 of the License, or
+//  (at your option) any later version.
+//
+//  Last modified: 2020-12-24
+//
+// ==================================================================================================
 #include "Arduino.h"
 #include "mrcServo.h"
 
+// --------------------------------------------------------------------------------------------------
+//  Main class function
+// --------------------------------------------------------------------------------------------------
 mrcServo::mrcServo(byte pin) {
   this->pin = pin;
   init();
 }
 
-// Test med callback
+// --------------------------------------------------------------------------------------------------
+//  Define a callback function to be called when servo reach endpoints
+// --------------------------------------------------------------------------------------------------
 void mrcServo::onFinished(mrcServo::callback_t callback)
 {
   onFinished_callback = callback;
 }
 
+// --------------------------------------------------------------------------------------------------
+//  Initialize the status class
+// --------------------------------------------------------------------------------------------------
 void mrcServo::init() {
   myservo.attach(pin);        // Attach the servo on pin "pin" to the servo object
-  servoAction = NON;
+  servoAction = NON;          // Start with servo stopped
 }
 
+// --------------------------------------------------------------------------------------------------
+//  [Function]
+// --------------------------------------------------------------------------------------------------
 void mrcServo::limits(int min, int max, int interval, int backStep) {
   this->minPosition = min-1;
   this->maxPosition = max+1;
@@ -26,6 +50,9 @@ void mrcServo::limits(int min, int max, int interval, int backStep) {
   if (debug == 1) {Serial.println(dbText+"Set backStep = "+backStep);}
 }
 
+// --------------------------------------------------------------------------------------------------
+//  Take care of repetitive tasks
+// --------------------------------------------------------------------------------------------------
 void mrcServo::loop(){
   unsigned long currentMillis = millis();
   switch (servoAction) {
@@ -38,7 +65,7 @@ void mrcServo::loop(){
     // Servo is moving clockwise
     case MIN:
       if(currentMillis - previousMillis > moveInterval) {
-        previousMillis = currentMillis;            // Save the last time we blinked the LED 
+        previousMillis = currentMillis;            // Save the last time we moved the servo
         currentPosition--;                         // Step down servo position by 1
 
         // Check if we reached servo end position
@@ -46,12 +73,11 @@ void mrcServo::loop(){
           servoAction = NON;
           servoStatus = 0;
           currentPosition = minPosition;
-          myservo.write(currentPosition);          // Tell servo to go to start position
-          if (debug == 1) {Serial.println(dbText+"Slutposition = "+currentPosition);}
-          // Klart! Anropa den funktion som definierats i huvudprogrammet med funktionen "mrcServo.onFinished(...)"
-          onFinished_callback();
+          myservo.write(currentPosition);          // Tell servo to move
+          if (debug == 1) {Serial.println(dbText+"Endpoit = "+currentPosition);}
+          onFinished_callback();                   // Finished moving. Go to callback function.
         } else {
-          myservo.write(currentPosition);          // Tell servo to go to start position
+          myservo.write(currentPosition);          // Tell servo to move
           if (debug == 1) {Serial.println(dbText+"Position (min) = "+currentPosition);}
         }
       }
@@ -60,20 +86,19 @@ void mrcServo::loop(){
     // Servo is moving counterclockwise
     case MAX:
       if(currentMillis - previousMillis > moveInterval) {
-        // Save the last time we blinked the LED 
-        previousMillis = currentMillis;   
-        currentPosition++;
+        previousMillis = currentMillis;           // Save the last time we moved the servo
+        currentPosition++;                        // Step up servo position by 1
 
+        // Check if we reached servo end position
         if (currentPosition >= endPosition) {
           servoAction = NON;
           servoStatus = 1;
           currentPosition = maxPosition;
-          myservo.write(currentPosition);          // Tell servo to go to start position
+          myservo.write(currentPosition);          // Tell servo to move
           if (debug == 1) {Serial.println(dbText+"Slutposition = "+currentPosition);}
-          // Klart! Anropa den funktion som definierats i huvudprogrammet med funktionen "mrcServo.onFinished(...)"
-          onFinished_callback();
+          onFinished_callback();                   // Finished moving. Go to callback function.
         } else {
-          myservo.write(currentPosition);  // Tell servo to go to start position
+          myservo.write(currentPosition);         // Tell servo to move
           if (debug == 1) {Serial.println(dbText+"Position (max) = "+currentPosition);}
         }
       }
@@ -81,8 +106,10 @@ void mrcServo::loop(){
   }
 }
 
+// --------------------------------------------------------------------------------------------------
+//  Move servo if it is NOT in closed position
+// --------------------------------------------------------------------------------------------------
 void mrcServo::closed(){
-  // Move servo if it is NOT in closed position
   if (endPosition != maxPosition+backStep) {
     servoAction = MAX;
     endPosition = maxPosition+backStep;
@@ -92,8 +119,10 @@ void mrcServo::closed(){
   }
 }
     
+// --------------------------------------------------------------------------------------------------
+//  Move servo if it is NOT in thrown position
+// --------------------------------------------------------------------------------------------------
 void mrcServo::thrown(){
-  // Move servo only if it is NOT in thrown position
   if (endPosition != minPosition-backStep) {
     servoAction = MIN;
     endPosition = minPosition-backStep;
@@ -103,16 +132,31 @@ void mrcServo::thrown(){
   }
 }
 
+// --------------------------------------------------------------------------------------------------
 // Tell servo to go directly to "newPosition"
+// --------------------------------------------------------------------------------------------------
 void mrcServo::moveTo (int newPosition) {
   myservo.write(newPosition);    
   currentPosition = newPosition;
 }
 
-boolean mrcServo::status() {
+// --------------------------------------------------------------------------------------------------
+//  Get servo status
+//  Returns:
+//    0 = servo isn't doing anything (NON)
+//    1 = servo moving to MIN endpoint (MIN)
+//    2 = servo moving to MAX endpoint (MAX)
+// --------------------------------------------------------------------------------------------------
+int mrcServo::status() {
   return servoAction;
 }
 
+// --------------------------------------------------------------------------------------------------
+// Get servo endpoint
+//  Returns:
+//    0 = servo at MIN endpoint
+//    1 = servo at MAX enpoint
+// --------------------------------------------------------------------------------------------------
 boolean mrcServo::position() {
   return servoStatus;
 }

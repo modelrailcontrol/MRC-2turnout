@@ -1,7 +1,16 @@
-/*
-  MRC MQTT settings & functions
-*/
-
+// ==================================================================================================
+//
+//  MRC 2turnout MQTT settings & functions
+//  Copyright (C) 2020  Peter Kindström
+//
+//  This program is free software: you can redistribute it and/or modify
+//  it under the terms of the GNU General Public License as published by
+//  the Free Software Foundation, either version 3 of the License, or
+//  (at your option) any later version.
+//
+//  Last modified: 2020-12-24
+//
+// ==================================================================================================
 #include <Arduino.h>
 
 WiFiClient wifiClient;            // Wifi initialisation
@@ -39,8 +48,6 @@ void mqttSetup() {
   // Subscribe
   subTopic[0] = "mrc/"+deviceID+"/turnout1/direction/set";
   subTopic[1] = "mrc/"+deviceID+"/turnout2/direction/set";
-//  subTopic[2] = signalOneSlaveListen;
-//  subTopic[3] = signalTwoSlaveListen;
 
   // Publish - device
   pubTopic[0] = "mrc/"+deviceID+"/$name";
