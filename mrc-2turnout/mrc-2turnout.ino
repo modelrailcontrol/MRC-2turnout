@@ -334,7 +334,7 @@ void mqttCallback(char* topic, byte* payload, unsigned int length) {
 
   // Check for Turnout 1 commands
   if (tpc == subTopic[0]) {
-    if (hasStarted == 1) {hasStarted = 0};
+    if (hasStarted == 1) {hasStarted = 0; };
 
     if (msg == "toggle") { btn1Pressed(); }
     else if (msg == "closed") {
@@ -347,7 +347,7 @@ void mqttCallback(char* topic, byte* payload, unsigned int length) {
   
   // Check for Turnout 2 commands
   if (tpc == subTopic[1]) {
-    if (hasStarted == 1) {hasStarted = 0};
+    if (hasStarted == 1) {hasStarted = 0; };
 
     if (msg == "toggle") { btn2Pressed(); }
     else if (msg == "closed") {
