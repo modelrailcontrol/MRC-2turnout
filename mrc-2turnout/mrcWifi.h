@@ -102,17 +102,17 @@ WebServer server(80);
 IotWebConf iotWebConf(thingName, &dnsServer, &server, wifiInitialApPassword);
 
 // Define settings to show up on configuration web page - Device
-iotwebconf::ParameterGroup deviceGroup = iotwebconf::ParameterGroup("deviceGroup", "");
+iotwebconf::ParameterGroup deviceGroup = iotwebconf::ParameterGroup("deviceGroup", "Device");
 iotwebconf::TextParameter webDeviceId = iotwebconf::TextParameter("Enhetens unika id", "deviceId", cfgDeviceId, STRING_LEN);
 iotwebconf::TextParameter webDeviceName = iotwebconf::TextParameter("Enhetens namn", "deviceName", cfgDeviceName, STRING_LEN);
 
 // Add your own configuration - MQTT
-iotwebconf::ParameterGroup mqttGroup = iotwebconf::ParameterGroup("mqttGroup", "");
+iotwebconf::ParameterGroup mqttGroup = iotwebconf::ParameterGroup("mqttGroup", "MQTT");
 iotwebconf::TextParameter webMqttServer = iotwebconf::TextParameter("MQTT IP-adress", "mqttServer", cfgMqttServer, STRING_LEN);
 iotwebconf::NumberParameter webMqttPort = iotwebconf::NumberParameter("MQTT-port", "mqttPort", cfgMqttPort, NUMBER_LEN);
 
 // ParameterGroup with text
-iotwebconf::ParameterGroup webServo1a = iotwebconf::ParameterGroup("Inst&auml;llningar f&ouml;r Servo 1a");
+iotwebconf::ParameterGroup webServo1a = iotwebconf::ParameterGroup("webServo1a", "Inst&auml;llningar f&ouml;r Servo 1a");
 
 // Define settings to show up on configuration web page - Servo 1a
 iotwebconf::NumberParameter webServo1aMin = iotwebconf::NumberParameter("Servo 1a min", "servo1aMin", cfgservo1aMin, NUMBER_LEN);
@@ -121,7 +121,7 @@ iotwebconf::NumberParameter webServo1aMove = iotwebconf::NumberParameter("Servo 
 iotwebconf::NumberParameter webServo1aBack = iotwebconf::NumberParameter("Servo 1a back", "servo1aBack", cfgservo1aBack, NUMBER_LEN);
 
 // ParameterGroup with text
-iotwebconf::ParameterGroup webServo1b = iotwebconf::ParameterGroup("Inst&auml;llningar f&ouml;r Servo 1b");
+iotwebconf::ParameterGroup webServo1b = iotwebconf::ParameterGroup("webServo1b", "Inst&auml;llningar f&ouml;r Servo 1b");
 
 // Define settings to show up on configuration web page - Servo 1b
 iotwebconf::NumberParameter webServo1bMin = iotwebconf::NumberParameter("Servo 1b min", "servo1bMin", cfgServo1bMin, NUMBER_LEN);
@@ -130,7 +130,7 @@ iotwebconf::NumberParameter webServo1bMove = iotwebconf::NumberParameter("Servo 
 iotwebconf::NumberParameter webServo1bBack = iotwebconf::NumberParameter("Servo 1b back", "servo1bBack", cfgServo1bBack, NUMBER_LEN);
 
 // ParameterGroup with text
-iotwebconf::ParameterGroup webServo2a = iotwebconf::ParameterGroup("Inst&auml;llningar f&ouml;r Servo 2a");
+iotwebconf::ParameterGroup webServo2a = iotwebconf::ParameterGroup("webServo2a", "Inst&auml;llningar f&ouml;r Servo 2a");
 
 // Define settings to show up on configuration web page - Servo 2a
 iotwebconf::NumberParameter webServo2aMin = iotwebconf::NumberParameter("Servo 2a min", "servo2aMin", cfgservo2aMin, NUMBER_LEN);
@@ -139,7 +139,7 @@ iotwebconf::NumberParameter webServo2aMove = iotwebconf::NumberParameter("Servo 
 iotwebconf::NumberParameter webServo2aBack = iotwebconf::NumberParameter("Servo 2a back", "servo2aBack", cfgservo2aBack, NUMBER_LEN);
 
 // ParameterGroup with text
-iotwebconf::ParameterGroup webServo2b = iotwebconf::ParameterGroup("Inst&auml;llningar f&ouml;r Servo 2b");
+iotwebconf::ParameterGroup webServo2b = iotwebconf::ParameterGroup("webServo2b", "Inst&auml;llningar f&ouml;r Servo 2b");
 
 // Define settings to show up on configuration web page - Servo 1b
 iotwebconf::NumberParameter webServo2bMin = iotwebconf::NumberParameter("Servo 2b min", "servo2bMin", cfgServo2bMin, NUMBER_LEN);
