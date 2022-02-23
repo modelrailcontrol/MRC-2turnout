@@ -8,7 +8,7 @@
 //  the Free Software Foundation, either version 3 of the License, or
 //  (at your option) any later version.
 //    
-//  Last modified: 2020-11-21
+//  Last modified: 2022-01-04
 //  Compiled with: LOLIN(WEMOS) D1 R2 & mini
 //
 //  Uses the following card definitions:
@@ -16,7 +16,7 @@
 //
 //  Uses the following libraries:
 //   EasyButton by Evert Arias    - v2.0.1 - https://github.com/evert-arias/EasyButton
-//   IotWebConf by Balazs Kelemen - v2.3.1 - https://github.com/prampec/IotWebConf
+//   IotWebConf by Balazs Kelemen - v3.2.0 - https://github.com/prampec/IotWebConf
 //   PubSubClient by Nick O'Leary - v2.8.0 - https://pubsubclient.knolleary.net/
 //
 // ==================================================================================================
@@ -28,6 +28,7 @@
 // Include all libraries
 #include <PubSubClient.h>     // Handle MQTT subcription & publish
 #include <IotWebConf.h>       // Handle wifi connection & client settings
+#include <IotWebConfUsing.h>  // Handle wifi connection & client settings
 #include <EasyButton.h>       // Handle button presses
 #include "mrcServo.h"         // Handle turnout servos
 #include "mrcStatus.h"        // Handle status LEDs
@@ -137,7 +138,7 @@ void loop() {
     if (mqttConnect()) {
       needMqttConnect = false;
     }
-  } else if ((iotWebConf.getState() == IOTWEBCONF_STATE_ONLINE) && (!mqttClient.connected())) {
+  } else if ((iotWebConf.getState() == iotwebconf::OnLine) && (!mqttClient.connected())) {
     Serial.println("MQTT reconnect");
     Serial.print("Client connected = ");
     Serial.println(mqttClient.connected());

@@ -8,7 +8,7 @@
 //  the Free Software Foundation, either version 3 of the License, or
 //  (at your option) any later version.
 //
-//  Last modified: 2020-12-24
+//  Last modified: 2022-01-04
 //
 // ==================================================================================================
 
@@ -102,48 +102,50 @@ WebServer server(80);
 IotWebConf iotWebConf(thingName, &dnsServer, &server, wifiInitialApPassword);
 
 // Define settings to show up on configuration web page - Device
-IotWebConfParameter webDeviceId = IotWebConfParameter("Enhetens unika id", "deviceId", cfgDeviceId, STRING_LEN);
-IotWebConfParameter webDeviceName = IotWebConfParameter("Enhetens namn", "deviceName", cfgDeviceName, STRING_LEN);
+iotwebconf::ParameterGroup deviceGroup = iotwebconf::ParameterGroup("deviceGroup", "Device");
+iotwebconf::TextParameter webDeviceId = iotwebconf::TextParameter("Enhetens unika id", "deviceId", cfgDeviceId, STRING_LEN);
+iotwebconf::TextParameter webDeviceName = iotwebconf::TextParameter("Enhetens namn", "deviceName", cfgDeviceName, STRING_LEN);
 
 // Add your own configuration - MQTT
-IotWebConfParameter webMqttServer = IotWebConfParameter("MQTT IP-adress", "mqttServer", cfgMqttServer, STRING_LEN);
-IotWebConfParameter webMqttPort = IotWebConfParameter("MQTT-port", "mqttPort", cfgMqttPort, NUMBER_LEN);
+iotwebconf::ParameterGroup mqttGroup = iotwebconf::ParameterGroup("mqttGroup", "MQTT");
+iotwebconf::TextParameter webMqttServer = iotwebconf::TextParameter("MQTT IP-adress", "mqttServer", cfgMqttServer, STRING_LEN);
+iotwebconf::NumberParameter webMqttPort = iotwebconf::NumberParameter("MQTT-port", "mqttPort", cfgMqttPort, NUMBER_LEN);
 
-// Separator with text
-IotWebConfSeparator separator1a = IotWebConfSeparator("Inst&auml;llningar f&ouml;r Servo 1a");
+// ParameterGroup with text
+iotwebconf::ParameterGroup webServo1a = iotwebconf::ParameterGroup("webServo1a", "Inst&auml;llningar f&ouml;r Servo 1a");
 
 // Define settings to show up on configuration web page - Servo 1a
-IotWebConfParameter webservo1aMin = IotWebConfParameter("Servo 1a min", "servo1aMin", cfgservo1aMin, NUMBER_LEN);
-IotWebConfParameter webservo1aMax = IotWebConfParameter("Servo 1a max", "servo1aMax", cfgservo1aMax, NUMBER_LEN);
-IotWebConfParameter webservo1aMove = IotWebConfParameter("Servo 1a hastighet", "servo1aMove", cfgservo1aMove, NUMBER_LEN);
-IotWebConfParameter webservo1aBack = IotWebConfParameter("Servo 1a back", "servo1aBack", cfgservo1aBack, NUMBER_LEN);
+iotwebconf::NumberParameter webServo1aMin = iotwebconf::NumberParameter("Servo 1a min", "servo1aMin", cfgservo1aMin, NUMBER_LEN);
+iotwebconf::NumberParameter webServo1aMax = iotwebconf::NumberParameter("Servo 1a max", "servo1aMax", cfgservo1aMax, NUMBER_LEN);
+iotwebconf::NumberParameter webServo1aMove = iotwebconf::NumberParameter("Servo 1a hastighet", "servo1aMove", cfgservo1aMove, NUMBER_LEN);
+iotwebconf::NumberParameter webServo1aBack = iotwebconf::NumberParameter("Servo 1a back", "servo1aBack", cfgservo1aBack, NUMBER_LEN);
 
-// Separator with text
-IotWebConfSeparator separator1b = IotWebConfSeparator("Inst&auml;llningar f&ouml;r Servo 1b");
+// ParameterGroup with text
+iotwebconf::ParameterGroup webServo1b = iotwebconf::ParameterGroup("webServo1b", "Inst&auml;llningar f&ouml;r Servo 1b");
 
 // Define settings to show up on configuration web page - Servo 1b
-IotWebConfParameter webServo1bMin = IotWebConfParameter("Servo 1b min", "servo1bMin", cfgServo1bMin, NUMBER_LEN);
-IotWebConfParameter webServo1bMax = IotWebConfParameter("Servo 1b max", "servo1bMax", cfgServo1bMax, NUMBER_LEN);
-IotWebConfParameter webServo1bMove = IotWebConfParameter("Servo 1b hastighet", "servo1bMove", cfgServo1bMove, NUMBER_LEN);
-IotWebConfParameter webServo1bBack = IotWebConfParameter("Servo 1b back", "servo1bBack", cfgServo1bBack, NUMBER_LEN);
+iotwebconf::NumberParameter webServo1bMin = iotwebconf::NumberParameter("Servo 1b min", "servo1bMin", cfgServo1bMin, NUMBER_LEN);
+iotwebconf::NumberParameter webServo1bMax = iotwebconf::NumberParameter("Servo 1b max", "servo1bMax", cfgServo1bMax, NUMBER_LEN);
+iotwebconf::NumberParameter webServo1bMove = iotwebconf::NumberParameter("Servo 1b hastighet", "servo1bMove", cfgServo1bMove, NUMBER_LEN);
+iotwebconf::NumberParameter webServo1bBack = iotwebconf::NumberParameter("Servo 1b back", "servo1bBack", cfgServo1bBack, NUMBER_LEN);
 
-// Separator with text
-IotWebConfSeparator separator2a = IotWebConfSeparator("Inst&auml;llningar f&ouml;r Servo 2a");
+// ParameterGroup with text
+iotwebconf::ParameterGroup webServo2a = iotwebconf::ParameterGroup("webServo2a", "Inst&auml;llningar f&ouml;r Servo 2a");
 
 // Define settings to show up on configuration web page - Servo 2a
-IotWebConfParameter webservo2aMin = IotWebConfParameter("Servo 2a min", "servo2aMin", cfgservo2aMin, NUMBER_LEN);
-IotWebConfParameter webservo2aMax = IotWebConfParameter("Servo 2a max", "servo2aMax", cfgservo2aMax, NUMBER_LEN);
-IotWebConfParameter webservo2aMove = IotWebConfParameter("Servo 2a hastighet", "servo2aMove", cfgservo2aMove, NUMBER_LEN);
-IotWebConfParameter webservo2aBack = IotWebConfParameter("Servo 2a back", "servo2aBack", cfgservo2aBack, NUMBER_LEN);
+iotwebconf::NumberParameter webServo2aMin = iotwebconf::NumberParameter("Servo 2a min", "servo2aMin", cfgservo2aMin, NUMBER_LEN);
+iotwebconf::NumberParameter webServo2aMax = iotwebconf::NumberParameter("Servo 2a max", "servo2aMax", cfgservo2aMax, NUMBER_LEN);
+iotwebconf::NumberParameter webServo2aMove = iotwebconf::NumberParameter("Servo 2a hastighet", "servo2aMove", cfgservo2aMove, NUMBER_LEN);
+iotwebconf::NumberParameter webServo2aBack = iotwebconf::NumberParameter("Servo 2a back", "servo2aBack", cfgservo2aBack, NUMBER_LEN);
 
-// Separator with text
-IotWebConfSeparator separator2b = IotWebConfSeparator("Inst&auml;llningar f&ouml;r Servo 2b");
+// ParameterGroup with text
+iotwebconf::ParameterGroup webServo2b = iotwebconf::ParameterGroup("webServo2b", "Inst&auml;llningar f&ouml;r Servo 2b");
 
 // Define settings to show up on configuration web page - Servo 1b
-IotWebConfParameter webServo2bMin = IotWebConfParameter("Servo 2b min", "servo2bMin", cfgServo2bMin, NUMBER_LEN);
-IotWebConfParameter webServo2bMax = IotWebConfParameter("Servo 2b max", "servo2bMax", cfgServo2bMax, NUMBER_LEN);
-IotWebConfParameter webServo2bMove = IotWebConfParameter("Servo 2b hastighet", "servo2bMove", cfgServo2bMove, NUMBER_LEN);
-IotWebConfParameter webServo2bBack = IotWebConfParameter("Servo 2b back", "servo2bBack", cfgServo2bBack, NUMBER_LEN);
+iotwebconf::NumberParameter webServo2bMin = iotwebconf::NumberParameter("Servo 2b min", "servo2bMin", cfgServo2bMin, NUMBER_LEN);
+iotwebconf::NumberParameter webServo2bMax = iotwebconf::NumberParameter("Servo 2b max", "servo2bMax", cfgServo2bMax, NUMBER_LEN);
+iotwebconf::NumberParameter webServo2bMove = iotwebconf::NumberParameter("Servo 2b hastighet", "servo2bMove", cfgServo2bMove, NUMBER_LEN);
+iotwebconf::NumberParameter webServo2bBack = iotwebconf::NumberParameter("Servo 2b back", "servo2bBack", cfgServo2bBack, NUMBER_LEN);
 
 
 void wifiSetup() {
@@ -152,30 +154,39 @@ void wifiSetup() {
   if (debug == 1) {Serial.println(dbText+"IotWebConf start");}
 
   // Adding up items to show on config web page
-  iotWebConf.addParameter(&webDeviceId);
-  iotWebConf.addParameter(&webDeviceName);
-  iotWebConf.addParameter(&webMqttServer);
-  iotWebConf.addParameter(&webMqttPort);
-  iotWebConf.addParameter(&separator1a);
-  iotWebConf.addParameter(&webservo1aMin);
-  iotWebConf.addParameter(&webservo1aMax);
-  iotWebConf.addParameter(&webservo1aMove);
-  iotWebConf.addParameter(&webservo1aBack);
-  iotWebConf.addParameter(&separator1b);
-  iotWebConf.addParameter(&webServo1bMin);
-  iotWebConf.addParameter(&webServo1bMax);
-  iotWebConf.addParameter(&webServo1bMove);
-  iotWebConf.addParameter(&webServo1bBack);
-  iotWebConf.addParameter(&separator2a);
-  iotWebConf.addParameter(&webservo2aMin);
-  iotWebConf.addParameter(&webservo2aMax);
-  iotWebConf.addParameter(&webservo2aMove);
-  iotWebConf.addParameter(&webservo2aBack);
-  iotWebConf.addParameter(&separator2b);
-  iotWebConf.addParameter(&webServo2bMin);
-  iotWebConf.addParameter(&webServo2bMax);
-  iotWebConf.addParameter(&webServo2bMove);
-  iotWebConf.addParameter(&webServo2bBack);
+  deviceGroup.addItem(&webDeviceId);
+  deviceGroup.addItem(&webDeviceName);
+  
+  mqttGroup.addItem(&webMqttServer);
+  mqttGroup.addItem(&webMqttPort);
+  
+  webServo1a.addItem(&webServo1aMin);
+  webServo1a.addItem(&webServo1aMax);
+  webServo1a.addItem(&webServo1aMove);
+  webServo1a.addItem(&webServo1aBack);
+
+  webServo1b.addItem(&webServo1bMin);
+  webServo1b.addItem(&webServo1bMax);
+  webServo1b.addItem(&webServo1bMove);
+  webServo1b.addItem(&webServo1bBack);
+
+  webServo2a.addItem(&webServo2aMin);
+  webServo2a.addItem(&webServo2aMax);
+  webServo2a.addItem(&webServo2aMove);
+  webServo2a.addItem(&webServo2aBack);
+
+  webServo2b.addItem(&webServo2bMin);
+  webServo2b.addItem(&webServo2bMax);
+  webServo2b.addItem(&webServo2bMove);
+  webServo2b.addItem(&webServo2bBack);
+
+  iotWebConf.addParameterGroup(&deviceGroup);  
+  iotWebConf.addParameterGroup(&mqttGroup);
+  iotWebConf.addParameterGroup(&webServo1a);
+  iotWebConf.addParameterGroup(&webServo1b);
+  iotWebConf.addParameterGroup(&webServo2a);
+  iotWebConf.addParameterGroup(&webServo2b);
+  
   iotWebConf.getApTimeoutParameter()->visible = true; // Show & set AP timeout at start
 
 //  iotWebConf.setStatusPin(STATUS_PIN);
